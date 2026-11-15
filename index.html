@@ -1,54 +1,61 @@
-<!doctype html>
-<html lang="ckb" dir="rtl">
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#07111f"><title>کاتی یاری | Soran Match Time</title>
-<style>
-:root{color-scheme:dark;--bg:#07111f;--muted:#91a2b7;--line:#22334a;--green:#36d399}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#18385a 0,transparent 55%),var(--bg);color:#f5f8fc;font-family:system-ui,-apple-system,"Noto Sans Arabic",sans-serif;min-height:100vh}
-.wrap{max-width:760px;margin:auto;padding:20px 15px 50px}.top{display:flex;align-items:center;justify-content:space-between;margin:8px 0 24px}
-.brand{display:flex;gap:11px;align-items:center}.ball{width:44px;height:44px;border-radius:15px;background:linear-gradient(145deg,#39d99c,#087b67);display:grid;place-items:center;font-size:23px;box-shadow:0 8px 25px #0a9b7040}
-.brand h1{font-size:19px;margin:0}.brand small{color:var(--muted)}.clock{text-align:left;color:var(--green);font-size:13px;font-weight:700}
-.hero{padding:20px;border:1px solid #2b4966;border-radius:23px;background:linear-gradient(120deg,#102b40,#102033 65%,#152c3b);margin-bottom:17px}
-.eyebrow{color:var(--green);font-size:12px;font-weight:700}.hero h2{font-size:25px;margin:8px 0}.hero p{color:#b5c5d7;margin:0;font-size:13px;line-height:1.8}
-.tabs{display:flex;gap:8px;margin:16px 0;overflow:auto}.tab,.refresh{border:1px solid var(--line);background:#0d1928;color:#b9c7d8;padding:10px 17px;border-radius:12px;white-space:nowrap;font:inherit;font-size:13px}
-.tab.active{background:#164b40;color:#8cf0c7;border-color:#247e66}.filters{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:15px 0}.filters label{color:var(--muted);font-size:12px}
-.filters select{background:#101d2e;color:#eef;border:1px solid var(--line);border-radius:10px;padding:9px;font:inherit;max-width:65%}
-.section{display:flex;justify-content:space-between;align-items:center;margin:22px 2px 12px}.section h3{font-size:16px;margin:0}.section span{color:var(--muted);font-size:12px}
-.match{background:linear-gradient(145deg,#122136,#0d1928);border:1px solid var(--line);border-radius:17px;padding:15px;margin:10px 0}
-.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-bottom:14px}.live{color:#ff7777;font-weight:800}
-.teams{display:grid;grid-template-columns:1fr 72px 1fr;align-items:center;gap:8px}.team{text-align:center;font-size:13px;font-weight:650;line-height:1.6}
-.crest{width:35px;height:35px;object-fit:contain;display:block;margin:0 auto 7px}.score{text-align:center;font-size:20px;font-weight:850;direction:ltr}
-.score small{display:block;font-size:11px;color:var(--muted);font-weight:500;margin-top:3px}.kick{text-align:center;color:var(--green);font-size:16px;font-weight:800}
-.empty,.loading,.error{padding:32px 14px;text-align:center;color:var(--muted);background:#0e1a29;border:1px dashed var(--line);border-radius:16px;line-height:1.8}
-.foot{text-align:center;color:#687c92;font-size:11px;margin:28px 0}.refresh{background:#173c37;color:#8cf0c7;padding:9px 13px}
-@media(min-width:600px){.wrap{padding-top:30px}.hero{padding:26px}.hero h2{font-size:29px}}
-</style></head>
-<body><main class="wrap">
-<header class="top"><div class="brand"><div class="ball">⚽</div><div><h1>کاتی یاری</h1><small>SORAN MATCH TIME</small></div></div><div class="clock" id="clock">کاتی عێراق</div></header>
-<section class="hero"><div class="eyebrow">● هەموو پاڵەوانێتییە سەرەکییەکان</div><h2>هیچ یارییەک لەدەست مەدە</h2><p>کاتی دەستپێکی یارییەکان، ئەنجامی زیندوو و خشتەی داهاتوو بە کاتی عێراق (UTC+3).</p></section>
-<nav class="tabs"><button class="tab active" data-range="today">ئەمڕۆ</button><button class="tab" data-range="tomorrow">سبەی</button><button class="tab" data-range="week">٧ ڕۆژی داهاتوو</button></nav>
-<div class="filters"><label id="dateLabel">یارییەکانی ئەمڕۆ</label><select id="league">
-<option value="all">هەموو پاڵەوانێتییەکان</option><option value="eng.1">Premier League</option><option value="esp.1">LaLiga</option><option value="ita.1">Serie A</option><option value="ger.1">Bundesliga</option><option value="fra.1">Ligue 1</option><option value="uefa.champions">Champions League</option><option value="uefa.europa">Europa League</option><option value="usa.1">MLS</option><option value="ned.1">Eredivisie</option><option value="por.1">Primeira Liga</option><option value="sco.1">Scottish Premiership</option><option value="tur.1">Süper Lig</option><option value="ksa.1">Saudi Pro League</option><option value="mex.1">Liga MX</option><option value="bra.1">Brasileirão</option></select></div>
-<div class="section"><h3 id="heading">یارییەکان</h3><button class="refresh" id="refresh">⟳ نوێکردنەوە</button></div>
-<div id="matches" class="loading">خشتەی یارییەکان بار دەکرێت...</div><div class="foot">کاتەکان بە کاتی عێراق · سەرچاوەی داتای یارییەکان: ESPN</div>
-</main>
-<script>
-const leagues=['eng.1','esp.1','ita.1','ger.1','fra.1','uefa.champions','uefa.europa','usa.1','ned.1','por.1','sco.1','tur.1','ksa.1','mex.1','bra.1'];
-let range='today';const $=s=>document.querySelector(s);
-const fmt=d=>new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Baghdad',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(d));
-const day=d=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Baghdad',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(d));
-function updateClock(){$('#clock').textContent=new Intl.DateTimeFormat('ckb',{timeZone:'Asia/Baghdad',hour:'2-digit',minute:'2-digit',hour12:true}).format(new Date())+' · عێراق'}
-setInterval(updateClock,30000);updateClock();
-function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function card(g){const c=g.competitions?.[0]||{},home=c.competitors?.find(x=>x.homeAway==='home')||c.competitors?.[0]||{},away=c.competitors?.find(x=>x.homeAway==='away')||c.competitors?.[1]||{},state=g.status?.type?.state,live=state==='in',done=state==='post',time=g.date;
-const badge=live?'زیندوو':done?'تەواو':'';
-return '<article class="match"><div class="meta"><span>'+esc(g.leagueName||c.league?.name||'Football')+'</span><span class="'+(live?'live':'')+'">'+(live?'● '+badge:done?badge:esc(new Intl.DateTimeFormat('ckb',{timeZone:'Asia/Baghdad',weekday:'short',day:'numeric',month:'short'}).format(new Date(time))))+'</span></div><div class="teams"><div class="team">'+(home.team?.logo?'<img class="crest" src="'+esc(home.team.logo)+'">':'')+esc(home.team?.displayName||'Home')+'</div><div class="score">'+(state==='pre'?'<div class="kick">'+fmt(time)+'</div>':esc(home.score??'0')+' - '+esc(away.score??'0'))+'<small>'+(live?esc(g.status?.displayClock||'لە یاری'):(done?'ئەنجامی کۆتایی':'کاتی دەستپێک'))+'</small></div><div class="team">'+(away.team?.logo?'<img class="crest" src="'+esc(away.team.logo)+'">':'')+esc(away.team?.displayName||'Away')+'</div></div></article>'}
-async function load(){const box=$('#matches');box.className='loading';box.textContent='خشتەی یارییەکان بار دەکرێت...';
-const now=new Date(),start=new Date(now),end=new Date(now);if(range==='tomorrow'){start.setDate(start.getDate()+1);end.setDate(end.getDate()+1)}if(range==='week')end.setDate(end.getDate()+6);
-const ids=$('#league').value==='all'?leagues:[$('#league').value];
-try{const qs=new URLSearchParams({from:day(start),to:day(end),leagues:ids.join(',')});const res=await fetch('/api/matches?'+qs);if(!res.ok)throw Error('API');const json=await res.json();const events=json.events||[];events.sort((a,b)=>new Date(a.date)-new Date(b.date));$('#heading').textContent='یارییەکان · '+events.length;box.className='';box.innerHTML=events.length?events.map(card).join(''):'<div class="empty">لەو ماوەیەدا یارییەکی تۆمارکراو نەدۆزرایەوە.<br>دواتر هەوڵ بدەرەوە.</div>'}
-catch(e){box.className='error';box.textContent='نەتوانرا داتاکان وەربگیرێن. تکایە دووبارە نوێی بکەرەوە.'}}
-document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');range=b.dataset.range;$('#dateLabel').textContent=b.textContent;load()}));
-$('#league').addEventListener('change',load);$('#refresh').addEventListener('click',load);load();setInterval(load,120000);
-</script></body></html>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کاتی یاری - Soran Match Time</title>
+    <style>
+        body {
+            font-family: Tahoma, sans-serif;
+            background-color: #0f172a;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            font-size: 22px;
+            color: #38bdf8;
+        }
+        .match-card {
+            background: #334155;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .time {
+            font-weight: bold;
+            color: #facc15;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>کاتی یارییەکانی ئەمڕۆ</h1>
+        <div id="matches-list">
+            <p style="text-align: center;">داتاکان لە بارکردندان...</p>
+        </div>
+    </div>
+
+    <script>
+        // لێرەدا دەتوانیت داتای نموونەیی یان بەستەری API دابنێیت
+        const container = document.getElementById('matches-list');
+        
+        // نموونە بۆ نیشاندانی شێوازەکە (دەتوانیت لەگەڵ API بەستەری بکەیت)
+        setTimeout(() => {
+            container.innerHTML = `
+                <div class="match-card">
+                    <span>ریاڵ مەدرید vs بارسێلۆنا</span>
+                    <span class="time">٢٣:٠
